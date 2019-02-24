@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WordStat</title>
+</head>
+<body>
+    <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="Submit">Submit</button>
+    <h2>{{ text }}</h2>
+{#    <input type="submit" value="Submit">#}
+{% comment %}    {% for item in query %}
+    <p>{{item}}</p>
+    {% endfor %}{% endcomment %}
+</form>
+</body>
+</html>
