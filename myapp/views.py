@@ -28,7 +28,7 @@ class HomeView(TemplateView):
             else:
                 thListW = []
             if 'SearchedAlso' in data:
-                searchedAlsoCaption = "Searched like " + "'" + w.phrase + "'"
+                searchedAlsoCaption = "Queries like " + "'" + w.phrase + "'"
                 searchedAlsoData = data["SearchedAlso"]
                 thListA = ["Phrase", "Shows"]
             else:
