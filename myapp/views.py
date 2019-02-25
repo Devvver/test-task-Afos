@@ -21,6 +21,10 @@ class HomeView(TemplateView):
             w = WordStat(form.cleaned_data['word'])
             id = w.get_id()
             data = w.readRep(id)
+            searchedWithCaption = None
+            searchedAlsoCaption = None
+            searchedWithData = None
+            searchedAlsoData = None
             if 'SearchedWith' in data:
                 searchedWithCaption = "Searched with " + "'" + w.phrase + "'"
                 searchedWithData = data["SearchedWith"]
