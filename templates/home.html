@@ -2,18 +2,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>WordStat</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <title>WordStat Task</title>
 </head>
 <body>
-    <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="Submit">Submit</button>
-    <h2>{{ text }}</h2>
-{#    <input type="submit" value="Submit">#}
-{% comment %}    {% for item in query %}
-    <p>{{item}}</p>
-    {% endfor %}{% endcomment %}
-</form>
+    <div class="container">
+        <h2>Word Stat</h2>
+        <form method="post">
+            {% load crispy_forms_tags %}
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="Submit" class="btn btn-success">Submit</button>
+         </form>
+        <div class="col-sm-6">
+            <table class="table table-striped">
+                <caption>{{ searchedWithCaption }}</caption>
+                <thead>
+                    <tr>
+                        {% for i in thListW %}
+                            <th>{{ i }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                {%  for dic in searchedWithData %}
+                    <tr>
+                        <td>
+                            {{ dic.Phrase }}
+                        </td>
+                        <td>
+                            {{ dic.Shows }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-sm-6">
+            <table class="table table-striped">
+                <caption>{{ searchedAlsoCaption }}</caption>
+                <thead>
+                    <tr>
+                        {% for i in thListA %}
+                            <th>{{ i }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                {%  for dic in searchedAlsoData %}
+                    <tr>
+                        <td>
+                            {{ dic.Phrase }}
+                        </td>
+                        <td>
+                            {{ dic.Shows }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
 </body>
 </html>

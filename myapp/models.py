@@ -14,8 +14,6 @@ class WordStat:
         self.phrase = phrase
         self.url = 'https://api-sandbox.direct.yandex.ru/live/v4/json/'
         self.token = 'AQAAAAACslbuAAWDAxMwffnF303dsVgLYJGLyy8'
-        self.id = ''
-        self.report_status = ''
 
     def get_id(self):
         data = {
@@ -26,16 +24,15 @@ class WordStat:
             'locale': 'ru',
             # задаем входные параметры; у каждого метода они свои
             'param': {
-                # Указываем не более 10 фраз через запятую
-                #'Phrases': ['айфон 7 цены ростов ', 'купить колбасу']
                 'Phrases': [self.phrase]
             }}
-        # Трансформируем json-запрос в одну строку и отправляем в Яндекс:)
+        # Трансформируем json-запрос в одну строку и отправляем в Яндекс
         jdata = json.dumps(data, ensure_ascii=False)
-        # print(jdata)
         r = requests.post(self.url, jdata.encode('utf-8'))
-        return r.text
+        rdata = json.loads(r.text)
+        return rdata["data"]
 
+    # Функция проверки готовности отчета
     def checkRep(self):
         data = {
             # метод проверки готовности отчета
@@ -43,27 +40,27 @@ class WordStat:
             'token': self.token
         }
         jdata = json.dumps(data, ensure_ascii=False)
-        r = requests.post(self.url, jdata)
-        # responsedata = json.loads(r.read().decode('utf-8', 'ignore'))
+        r = requests.post(self.url, jdata.encode('utf-8'))
+        rdata = json.loads(r.text)
+        return rdata["data"][len(rdata["data"]) - 1]["StatusReport"]
 
-        # print(responsedata['data'][len(responsedata['data']) - 1]['StatusReport'])
-        # self.report_status = r.text[]
-        # return responsedata['data'][len(responsedata['data']) - 1]['StatusReport']
-
-    def readRep(self):
-        while self.report_status != 'Done':
-            print ('...')
+    def readRep(self, id):
+        # Задаем условие: пока функция проверки готовности не даст положительный ответ, будем ждать
+        while self.checkRep() != 'Done':
+            print('...')
             time.sleep(2)
 
-        print(self.id, ' id')
+        print(id, ' id')
+
         data = {
             # используем метод для получения отчета
             'method': 'GetWordstatReport',
             'token': self.token,
             # указываем номер отчета
-            'param': self.id
+            'param': id
         }
-    #
+
         jdata = json.dumps(data, ensure_ascii=False)
-        r = requests.post(self.url, jdata)
-        # return r.text
+        r = requests.post(self.url, jdata.encode('utf-8'))
+        rdata = json.loads(r.text)
+        return rdata["data"][0]
